@@ -1,0 +1,43 @@
+version: "3.7"
+
+x-logging:
+  &default-logging
+  options:
+    max-size: '12m'
+    max-file: '5'
+  driver: json-file
+
+services:
+  nginx:
+    build: ./misc/nginx
+    restart: unless-stopped
+    volumes:
+      - nginx_data:/data
+      - st_build:/sites/st-frontend:ro
+    networks:
+      - frontend
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - app
+  app:
+    image: bneibaruch/sviva_tova:${APP_VERSION}
+    restart: unless-stopped
+    volumes:
+      - st_build:/build_copy
+    networks:
+      - frontend
+    ports:
+      - "3000"
+    logging: *default-logging
+    environment:
+      DATABASE_URL: postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/simulator?sslmode=disable
+
+networks:
+  frontend:
+
+volumes:
+  nginx_data:
+  st_build:
+
