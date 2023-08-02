@@ -32,7 +32,14 @@ services:
       - "3000"
     logging: *default-logging
     environment:
+      SESSION_SECRET: unused
       DATABASE_URL: postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/simulator?sslmode=disable
+      FACEBOOK_CLIENT_ID: ${FACEBOOK_CLIENT_ID}
+      FACEBOOK_SECRET_KEY: ${FACEBOOK_SECRET_KEY}
+      KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
+      KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
+      KEYCLOAK_DOMAIN: ${KEYCLOAK_DOMAIN}
+      KEYCLOAK_REALM: ${KEYCLOAK_REALM}
 
 networks:
   frontend:
